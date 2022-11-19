@@ -1,0 +1,5 @@
+DROP TABLE IF EXISTS api_user CASCADE;
+--DROP TABLE IF EXISTS api_user_audit CASCADE;
+--DROP FUNCTION IF EXISTS api_user_audit_fn();
+DROP TABLE IF EXISTS balance_type CASCADE;
+DROP TABLE IF EXISTS balance_tracker CASCADE;

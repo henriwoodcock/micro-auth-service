@@ -1,0 +1,65 @@
+openapi: 3.0.0
+info:
+  title: "Auth Service"
+  description: "An auth service REST API"
+  version: "1.0.0"
+
+paths:
+  /status-check:
+    get:
+      operationId: "auth_service.routes.status_check"
+      summary: "Check the status of the service"
+      responses:
+        "200":
+          description: "Service operating as normal"
+  /signup:
+    post:
+      operationId: "auth_service.routes.signup"
+      summary: "Create an account"
+      requestBody:
+          description: "User to create"
+          required: True
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  username:
+                    type: string
+                  password:
+                    type: string
+                required:
+                  - username
+                  - password
+      responses:
+        "200":
+          description: "Account sucessfully created"
+  /login:
+    post:
+      operationId: "auth_service.routes.login"
+      summary: "Get auth token"
+      requestBody:
+          description: "User details"
+          required: True
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  username:
+                    type: string
+                  password:
+                    type: string
+                required:
+                  - username
+                  - password
+      responses:
+        "200":
+          description: "Account sucessfully created"
+  /auth-check:
+    get:
+      operationId: "auth_service.routes.auth_check"
+      summary: "Check auth token works"
+      responses:
+        "200":
+          description: "Success"

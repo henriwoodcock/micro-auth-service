@@ -1,0 +1,31 @@
+version: '3.7'
+services:
+    auth-db:
+        environment:
+            POSTGRES_USER: test
+            POSTGRES_PASSWORD: test
+            POSTGRES_DB: auth
+        image: postgres:14.2
+        networks:
+            - default
+        ports:
+            - '5438:5432'
+        restart: always
+        logging:
+          options:
+            max-size: 10m
+            max-file: "3"
+        volumes:
+          # copy the sql script to create tables
+          - ./db/create_schema.sql:/docker-entrypoint-initdb.d/create_tables.sql
+    server:
+        build: .
+        depends_on:
+            - auth-db
+        environment:
+            STAGE: test
+        networks:
+            - default
+        ports:
+            - 5000:5000
+        restart: always
