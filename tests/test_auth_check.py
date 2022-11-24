@@ -14,7 +14,7 @@ def test_round_trip(app_client):
     token = resp.json['token']
 
     resp = app_client.get(
-        'auth-check', headers={'Authorization': f'Bearer {token}'}
+        '/auth-check', headers={'Authorization': f'Bearer {token}'}
     )
     assert resp.status_code == HTTPStatus.OK
-    assert resp.json == {'message': 'Hello bobby'}
+    assert resp.json == {'message': 'Hello bobby', 'status': 'OK'}

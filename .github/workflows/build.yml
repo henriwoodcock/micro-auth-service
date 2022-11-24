@@ -1,6 +1,10 @@
 name: Auth Service Build
 
-on: [push]
+on:
+  push:
+    branch: master
+  pull_request:
+    branch: master
 
 jobs:
   build:
@@ -33,3 +37,14 @@ jobs:
       - name: Test with pytest
         run: |
           pytest
+
+jobs:
+  intergation_test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: isbang/compose-action@v1.4.1
+    with:
+      compose-file: "./docker-compose.yml"

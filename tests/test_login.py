@@ -35,8 +35,9 @@ def test_login(monkeypatch, app_client, fake_user):
     )
     assert resp.status_code == HTTPStatus.OK
     assert resp.json == {
-      'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQ'
-               'iOiJhYzQ2NWJiZDJhZWU0YmY3ODVlNjcwODk1ZTU1MjU2MCIsImV'
-               '4cCI6MTY0MDk5NTIwMH0.YrrZpFAuCCbcXW5TzkK407EjAuWQvfQ'
-               'Q_6HGUJJDT2c'
+        'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3V1aWQ'
+                 'iOiJhYzQ2NWJiZDJhZWU0YmY3ODVlNjcwODk1ZTU1MjU2MCIsImV'
+                 '4cCI6MTY0MDk5NTIwMH0.YrrZpFAuCCbcXW5TzkK407EjAuWQvfQ'
+                 'Q_6HGUJJDT2c',
+        'status': 'OK'
     }

@@ -26,3 +26,12 @@ def retrieve_user(session, username):
       """,
       params={'username': username}
     ).one_or_none()
+
+
+def delete_user(session, user_uuid):
+    session.execute(
+        """
+        DELETE from users WHERE user_uuid = :user_uuid
+        """,
+        params={'user_uuid': user_uuid}
+    )

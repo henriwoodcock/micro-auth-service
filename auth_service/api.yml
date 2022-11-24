@@ -63,3 +63,10 @@ paths:
       responses:
         "200":
           description: "Success"
+  /user:
+    delete:
+      operationId: "auth_service.routes.delete_self"
+      summary: "Delete your user"
+      responses:
+        "200":
+          description: "Success"

@@ -9,6 +9,7 @@ import jwt
 from auth_service.database import db
 from auth_service.common import db_wrapper
 from auth_service import authentication
+from auth_service import exceptions
 
 _logger = logging.getLogger(__name__)
 
@@ -25,9 +26,17 @@ def auth_check():
             params={'uuid': g.user_uuid}
         ).one_or_none()
     if res is None:
-        return {}, HTTPStatus.UNAUTHORIZED
+        return (
+            {'status': exceptions.StatusCodes.UNAUTHORIZED},
+            HTTPStatus.UNAUTHORIZED
+        )
 
-    return {'message': f'Hello {res.username}'}, HTTPStatus.OK
+    return (
+        {
+            'message': f'Hello {res.username}',
+            'status': exceptions.StatusCodes.OK
+        }, HTTPStatus.OK
+    )
 
 
 def signup():
@@ -42,9 +51,12 @@ def signup():
         except Exception:
             _logger.exception('error while creating user')
             session.rollback()
-            return {'status': 'ERROR'}, HTTPStatus.INTERNAL_SERVER_ERROR
+            return (
+                {'status': exceptions.StatusCodes.UNKNOWN_ERROR},
+                HTTPStatus.INTERNAL_SERVER_ERROR
+            )
 
-    return {}, HTTPStatus.OK
+    return {'status': exceptions.StatusCodes.OK}, HTTPStatus.OK
 
 
 def login():
@@ -59,10 +71,16 @@ def login():
         except Exception:
             _logger.exception('error while fetching user')
             session.rollback()
-            return {'status': 'ERROR'}, HTTPStatus.INTERNAL_SERVER_ERROR
+            return (
+                {'status': exceptions.StatusCodes.UNKNOWN_ERROR},
+                HTTPStatus.INTERNAL_SERVER_ERROR
+            )
 
     if user is None:
-        return {'status': 'USER_NOT_FOUND'}, HTTPStatus.NOT_FOUND
+        return (
+            {'status': exceptions.StatusCodes.UNKNOWN_ERROR},
+            HTTPStatus.NOT_FOUND
+        )
 
     # check password
     assert password == user.password
@@ -77,4 +95,19 @@ def login():
         payload, config['JWT_SECRET'], config['JWT_ALGORITHM']
     )
 
-    return {'token': jwt_token}, HTTPStatus.OK
+    return (
+        {'token': jwt_token, 'status': exceptions.StatusCodes.OK}, HTTPStatus.OK
+    )
+
+
+def delete_self():
+    with db.session() as session:
+        try:
+            db_wrapper.delete_user(session, g.user_uuid)
+        except Exception:
+            _logger.exception('error while fetching user')
+            session.rollback()
+            return (
+                {'status': exceptions.StatusCodes.UNKNOWN_ERROR},
+                HTTPStatus.INTERNAL_SERVER_ERROR
+            )
