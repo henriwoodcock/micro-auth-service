@@ -17,3 +17,10 @@ pip install -r requirements.txt
 ```
 pytest
 ```
+
+## Integration Tests
+
+```
+docker compose up
+pytest integration_tests
+```
