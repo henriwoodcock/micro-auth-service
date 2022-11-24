@@ -44,11 +44,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-      - uses: isbang/compose-action@v1.4.1
+      - name: Docker compose up
+        uses: actions/checkout@v3
+        uses: isbang/compose-action@v1.4.1
 
-    with:
-      compose-file: "./docker-compose.yml"
+        with:
+          compose-file: "./docker-compose.yml"
+          down-flags: "--volumes"
 
       - name: Set up Python 3.10
         uses: actions/setup-python@v4
